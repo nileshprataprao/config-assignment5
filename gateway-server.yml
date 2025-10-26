@@ -10,21 +10,29 @@ eureka:
     serviceUrl:
       defaultZone: http://eurekaserver:8070/eureka/
       
-    gateway:
-      # Static routes - these will show in /actuator/gateway/routes
-      routes:
-        - id: licensing-service
-          uri: lb://licensing-service
-          predicates:
-            - Path=/license/**
-          filters:
-            - RewritePath=/license/(?<path>.*), /${path}
-        - id: organization-service
-          uri: lb://organization-service
-          # predicates:
-          #   - Path=/organization/**
-          # filters:
-          #   - "RewritePath=/license/(?<path>.*), /${path}"
+        gateway:
+          # Static routes - these show in /actuator/gateway/routes
+          routes:
+            - id: licensing-service
+              uri: lb://licensing-service
+              predicates:
+                - Path=/license/**
+              filters:
+                - RewritePath=/license/(?<path>.*), /$\{path}
+    
+            - id: organization-service
+              uri: lb://organization-service
+              predicates:
+                - Path=/organization/**
+              filters:
+                - RewritePath=/organization/(?<path>.*), /$\{path}
+    
+            - id: google-route
+              uri: https://www.google.com
+              predicates:
+                - Path=/google/**
+              filters:
+                - RewritePath=/google/(?<remaining>.*), /${remaining}
 
       # Discovery locator - dynamically routes all Eureka services
       discovery:
