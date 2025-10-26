@@ -21,10 +21,10 @@ eureka:
             - RewritePath=/license/(?<path>.*), /${path}
         - id: organization-service
           uri: lb://organization-service
-          predicates:
-            - Path=/organization/**
-          filters:
-            - "RewritePath=/license/(?<path>.*), /${path}"
+          # predicates:
+          #   - Path=/organization/**
+          # filters:
+          #   - "RewritePath=/license/(?<path>.*), /${path}"
 
       # Discovery locator - dynamically routes all Eureka services
       discovery:
