@@ -24,7 +24,7 @@ eureka:
           predicates:
             - Path=/organization/**
           filters:
-            - RewritePath=/organization/(?<path>.*), /${path}
+            - "RewritePath=/license/(?<path>.*), /${path}"
 
       # Discovery locator - dynamically routes all Eureka services
       discovery:
