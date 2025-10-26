@@ -40,6 +40,10 @@ spring:
           filters:
           - RewritePath=/license/(?<path>.*), /$\{path}
           - RemoveRequestHeader= Cookie,Set-Cookie
+        discovery:
+          locator:
+            enabled: true
+            lower-case-service-id: true
 
 
 keycloak:
