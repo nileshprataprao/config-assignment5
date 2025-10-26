@@ -1,11 +1,6 @@
 spring:
   application:
     name: gateway-server
-  config:
-    import: "configserver:"
-  cloud:
-    config:
-      uri: http://configserver:8089
 
     gateway:
       # Static routes - these will show in /actuator/gateway/routes
