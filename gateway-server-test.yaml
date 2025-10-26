@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: gateway-server
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eurekaserver:8070/eureka/
+      
+        gateway:
+          # Static routes - these show in /actuator/gateway/routes
+          routes:
+            - id: licensing-service
+              uri: lb://licensing-service
+              predicates:
+                - Path=/license/**
+              filters:
+                - RewritePath=/license/(?<path>.*), /$\{path}
+    
+            - id: organization-service
+              uri: lb://organization-service
+              predicates:
+                - Path=/organization/**
+              filters:
+                - RewritePath=/organization/(?<path>.*), /$\{path}
+    
+            - id: google-route
+              uri: https://www.google.com
+              predicates:
+                - Path=/google/**
+              filters:
+                - RewritePath=/google/(?<remaining>.*), /${remaining}
+
+      # Discovery locator - dynamically routes all Eureka services
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework.web: WARN
+    com.optimagrowth: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # expose all endpoints
+  endpoint:
+    gateway:
+      enabled: true
+    health:
+      show-details: always
