@@ -28,7 +28,7 @@ eureka:
               filters:
                 - RewritePath=/organization/(?<path>.*), /$\{path}
 
-            - id: google-route-refresh
+            - id: google-route1
               uri: https://www.google.com
               predicates:
                 - Path=/google/**
