@@ -1,6 +1,44 @@
 spring:
   application:
     name: gateway-server
+
+  cloud:
+    gateway:
+      # Static routes - these show in /actuator/gateway/routes
+      routes:
+        - id: licensing-service
+          uri: lb://licensing-service
+          predicates:
+            - Path=/license/**
+          filters:
+            - RewritePath=/license/(?<path>.*), /${path}
+
+        - id: organization-service
+          uri: lb://organization-service
+          predicates:
+            - Path=/organization/**
+          filters:
+            - RewritePath=/organization/(?<path>.*), /${path}
+
+        - id: google-route1
+          uri: https://www.google.com
+          predicates:
+            - Path=/google/**
+          filters:
+            - RewritePath=/google/(?<remaining>.*), /${remaining}
+
+        - id: arizona-edu
+          uri: https://www.arizona.edu/
+          predicates:
+            - Path=/arizona/**
+          filters:
+            - RewritePath=/arizona/(?<remaining>.*), /${remaining}
+
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
 eureka:
   instance:
     preferIpAddress: true
@@ -9,37 +47,6 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://eurekaserver:8070/eureka/
-
-    cloud:
-        gateway:
-          # Static routes - these show in /actuator/gateway/routes
-          routes:
-            - id: licensing-service
-              uri: lb://licensing-service
-              predicates:
-                - Path=/license/**
-              filters:
-                - RewritePath=/license/(?<path>.*), /$\{path}
-
-            - id: organization-service
-              uri: lb://organization-service
-              predicates:
-                - Path=/organization/**
-              filters:
-                - RewritePath=/organization/(?<path>.*), /$\{path}
-
-            - id: google-route-test1
-              uri: https://www.google.com
-              predicates:
-                - Path=/google/**
-              filters:
-                - RewritePath=/google/(?<remaining>.*), /${remaining}
-
-      # Discovery locator - dynamically routes all Eureka services
-        discovery:
-          locator:
-            enabled: true
-            lower-case-service-id: true
 
 logging:
   level:
@@ -51,7 +58,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"  # expose all endpoints
+        include: "*"
   endpoint:
     gateway:
       enabled: true
