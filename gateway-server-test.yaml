@@ -11,14 +11,14 @@ spring:
           predicates:
             - Path=/license/**
           filters:
-            - RewritePath=/license/(?<path>.*), /${path}
+            - RewritePath=/license/(?<path>.*), /$\{path}
 
         - id: organization-service
           uri: lb://organization-service
           predicates:
             - Path=/organization/**
           filters:
-            - RewritePath=/organization/(?<path>.*), /${path}
+            - RewritePath=/organization/(?<path>.*), /$\{path}
 
         - id: google-route1
           uri: https://www.google.com
