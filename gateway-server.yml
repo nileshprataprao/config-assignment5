@@ -9,7 +9,8 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://eurekaserver:8070/eureka/
-      
+
+    cloud:
         gateway:
           # Static routes - these show in /actuator/gateway/routes
           routes:
@@ -19,14 +20,14 @@ eureka:
                 - Path=/license/**
               filters:
                 - RewritePath=/license/(?<path>.*), /$\{path}
-    
+
             - id: organization-service
               uri: lb://organization-service
               predicates:
                 - Path=/organization/**
               filters:
                 - RewritePath=/organization/(?<path>.*), /$\{path}
-    
+
             - id: google-route
               uri: https://www.google.com
               predicates:
@@ -35,10 +36,10 @@ eureka:
                 - RewritePath=/google/(?<remaining>.*), /${remaining}
 
       # Discovery locator - dynamically routes all Eureka services
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+        discovery:
+          locator:
+            enabled: true
+            lower-case-service-id: true
 
 logging:
   level:
