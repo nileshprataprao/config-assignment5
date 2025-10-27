@@ -27,12 +27,12 @@ spring:
           filters:
             - RewritePath=/google/(?<remaining>.*), /${remaining}
 
-        # - id: arizona-edu
-        #   uri: https://www.arizona.edu/
-        #   predicates:
-        #     - Path=/arizona/**
-        #   filters:
-        #     - RewritePath=/arizona/(?<remaining>.*), /${remaining}
+        - id: arizona-edu
+          uri: https://www.arizona.edu/
+          predicates:
+            - Path=/arizona/**
+          filters:
+            - RewritePath=/arizona/(?<remaining>.*), /${remaining}
 
       discovery:
         locator:
